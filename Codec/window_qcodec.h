@@ -3,12 +3,18 @@
 
 #include <QMainWindow>
 #include "cut_low_hight.h"
+#include <memory>
+#include <QFile>
+#include <QSet>
+#include <QHash>
+#include <QFileDialog>
+#include <QMessageBox>
 
 typedef std::shared_ptr<symbol_and_probability> symbol_and_probability_ptr;
 
-enum{ ALL_CUT   = 1_000_000,
-      MOD_CONST = 100_000,
-      MULTIPLE  = 100_000_000
+enum{ ALL_CUT   = 1000000,
+      MOD_CONST = 100000,
+      MULTIPLE  = 100000000
 };
 
 namespace Ui {

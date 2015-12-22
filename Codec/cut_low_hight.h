@@ -2,11 +2,16 @@
 #define CUT_LOW_HIGHT
 
 typedef unsigned int uint;
-typedef unsigned double udouble;
+typedef double udouble;
 
 struct cut_struct {
     udouble low;
     udouble hight;
+
+    bool isOwn_cut(udouble code)
+    {
+        return (code >= low && code <= hight);
+    }
 };
 
 typedef struct cut_struct cut;
@@ -14,12 +19,12 @@ typedef struct cut_struct cut;
 class symbol_and_probability
 {
 private:
-    cut(){}
+    symbol_and_probability(){}
     char symbol;
     udouble probability;
 
 public:
-    cut(char s, udouble p)
+    symbol_and_probability(char s, udouble p)
     {
         symbol      = s;
         probability = p;
@@ -35,9 +40,9 @@ public:
         return probability;
     }
 
-    bool operator<(const cut &right_value) const
+    bool operator<(const symbol_and_probability &right_value) const
     {
-        return this->probability > right_value.probability;
+        return (this->getProbability() > right_value.getProbability());
     }
 };
 

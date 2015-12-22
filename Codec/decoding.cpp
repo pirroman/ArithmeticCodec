@@ -42,6 +42,29 @@ namespace {
 
     void write_decoding_file(QFile &file_for_decoding, QFile &newFile,QHash<char, cut> &cuts_for_coding)
     {
+        uint reading_code    = 0;
+        udouble code         = 0;
+        udouble low_code     = 0;
+        udouble hight_code   = 0;
 
+        while(!file_for_decoding.atEnd())
+        {
+            file_for_decoding.read((char*) &reading_code, sizeof(uint));
+            code = reading_code / ALL_CUT;
+            while(reading_code)
+            {
+                for(auto iterator = cuts_for_coding.begin(); iterator != cuts_for_coding.end(); ++iterator)
+                {
+                    if(iterator->value().isOwn_cut(code))
+                    {
+                        newFile.write((char*) &iterator->key());
+                        low_code    = (iterator->value().low);
+                        hight_code  = (iterator->value().hight);
+                        break;
+                    }
+                } //end for iter
+                code = (code - low_code)/(hight_code - low_code);
+            } //end while reading_code
+        } //end while file_for_decoding
     }
 }

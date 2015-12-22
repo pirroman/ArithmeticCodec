@@ -37,7 +37,7 @@ void window_QCodec::on_button_for_encoding_clicked()
 void window_QCodec::on_button_for_decoding_clicked()
 {
     QString fileName_for_decoding = QFileDialog::getOpenFileName(this, tr("Selecct file for decoding"), "", tr("arifmethic file (*.arf);;All Files (*)"));
-    if (fileName.isEmpty())
+    if (fileName_for_decoding.isEmpty())
     {
         QMessageBox::critical(NULL, tr("ERROR"), tr("select file!"));
         return;

@@ -1,13 +1,14 @@
 #include "window_qcodec.h"
+#include <QHash>
 
 namespace {//prototypes
     void writeFile               (QFile &file_for_compressing, QHash<char, cut> &cuts_for_coding);
-    void write_service_info      (QFile &newFile, QHash<char, cut> &cuts_for_coding);
+    void write_service_info      (QFile &newFile, QHash<char, cut> & cuts_for_coding);
     void write_data              (QFile &file_for_compressing, QFile &newFile, \
                                             QHash<char, cut> &cuts_for_coding);
-    uint setFrequency_for_symbols(QHash<char, uint> &pairs_char_and_frequency, QFile &file);
-    void setCuts_for_symbols     (QHash<char, uint> &pairs_char_and_frequency, \
-                                  QHash<char, cut> &cuts_for_coding, uint amount_symbols_in_file);
+    uint setFrequency_for_symbols(QHash<char, uint> & pairs_char_and_frequency, QFile &file);
+    void setCuts_for_symbols     (QHash<char, uint> & pairs_char_and_frequency, \
+                                  QHash<char, cut> & cuts_for_coding, uint amount_symbols_in_file);
 }
 
 void window_QCodec::encoding(QFile &file_for_encoding)
@@ -24,13 +25,13 @@ void window_QCodec::encoding(QFile &file_for_encoding)
 namespace {// functions for encoding method
     void write_service_info(QFile &newFile,QHash<char, cut> &cuts_for_coding)
     {
-        uint alpabet = cuts_for_coding.size();
-        newFile.write((char*) &alpabet, sizeof(uint));
+        uint alphabet = cuts_for_coding.size();
+        newFile.write((char*) &alphabet, sizeof(uint));
 
         for(auto iterator = cuts_for_coding.begin(); iterator != cuts_for_coding.end(); ++iterator)
         {
-            cut temp = iterator->value();
-            newFile.write((char*) &iterator->key(), sizeof(char));
+            cut temp = iterator.value();
+            newFile.write((char*) &iterator.key(), sizeof(char));
             newFile.write((char*) &temp.hight     , sizeof(udouble));
         }//end for
     }//end function
@@ -41,9 +42,6 @@ namespace {// functions for encoding method
         uint hight                  = ALL_CUT;
         uint buffer_uint            = 0;
         uint multiple_for_buffer    = MULTIPLE;
-
-        QHash<char, cut_ptr> pairs_char_and_cut;
-        QSet_convert_QHash(cut_for_coding, pairs_char_and_cut);
 
         while(!file_for_compressing.atEnd())
         {
@@ -102,8 +100,8 @@ namespace {// functions for encoding method
         udouble probability = 0;
         for(auto iterator = pairs_char_and_frequency.begin(); iterator != pairs_char_and_frequency.end(); ++iterator)
         {
-            probability                       = iterator.value() / amount_symbols_in_file;
-            symbol_and_probability_ptr symbol = new symbol_and_probability(iterator.key(), probability);
+            probability                       = iterator->value() / amount_symbols_in_file;
+            symbol_and_probability_ptr symbol = new symbol_and_probability(iterator->key(), probability);
 
             sort_probability.insert(symbol);
         }
